@@ -21,5 +21,6 @@ services:
       - 8888:8888
     ipc: host
     init: true
+    
 
 
