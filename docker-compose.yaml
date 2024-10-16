@@ -16,6 +16,8 @@ services:
       - ./:/app/
       - ~/.config/gcloud/:/home/${USER_NAME:-nour}/.config/gcloud
       - ~/.ssh:/home/${USER_NAME:-nour}/.ssh
+    environment:
+      - HYDRA_FULL_ERROR=1
     ports:
       - 8888:8888
     ipc: host

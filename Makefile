@@ -30,8 +30,8 @@ version-data: up
 	$(DOCKER_COMPOSE_EXEC) python ./cybulde/version_data.py
 
 ## call prepare-dataset
-prepare-dataset: up
-	$(DOCKER_COMPOSE_EXEC) python ./cybulde/prepare_dataset.py
+process_data: up
+	$(DOCKER_COMPOSE_EXEC) python ./cybulde/process_data.py
 
 ## Starts jupyter lab
 notebook: up
