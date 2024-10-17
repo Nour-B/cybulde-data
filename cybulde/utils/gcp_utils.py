@@ -1,6 +1,7 @@
 from google.cloud import secretmanager
 
-def access_secret_version(project_id: str, secret_id: str, version_id:str="1") -> str:
+
+def access_secret_version(project_id: str, secret_id: str, version_id: str = "1") -> str:
     """
     Access the payload for the given secret if one exists.
     The version can be a version number as string (e.g. "S or an alias (e.g. "latest"))
@@ -14,8 +15,6 @@ def access_secret_version(project_id: str, secret_id: str, version_id:str="1") -
         str: _description_
     """
 
-
-
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
 
@@ -23,8 +22,8 @@ def access_secret_version(project_id: str, secret_id: str, version_id:str="1") -
     name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
 
     # Access the secret version.
-    response = client.access_secret_version(request={"name":name})
+    response = client.access_secret_version(request={"name": name})
 
     # Return the decoded payload.
-    payload = response.payload.data.decode('UTF-8')
+    payload = response.payload.data.decode("UTF-8")
     return payload

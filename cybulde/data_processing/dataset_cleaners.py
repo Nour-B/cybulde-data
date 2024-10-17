@@ -122,7 +122,7 @@ class SpellCorrectionDatasetCleaner(DatasetCleaner):
     def clean_words(self, words: list[str]) -> list[str]:
         text = " ".join(words)
         return self.clean_text(text).split()
-    
+
 
 class CharacterLimiterDatasetCleaner(DatasetCleaner):
     def __init__(self, character_limit: int = 300) -> None:
@@ -135,7 +135,7 @@ class CharacterLimiterDatasetCleaner(DatasetCleaner):
     def clean_words(self, words: list[str]) -> list[str]:
         text = " ".join(words)
         return self.clean_text(text).split()
-    
+
 
 class DatasetCleanerManager:
     def __init__(self, dataset_cleaners: dict[str, DatasetCleaner]) -> None:

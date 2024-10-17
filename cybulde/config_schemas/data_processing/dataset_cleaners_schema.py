@@ -71,11 +71,12 @@ class SpellCorrectionDatasetCleanerConfig(DatasetCleanerConfig):
     _target_: str = "cybulde.data_processing.dataset_cleaners.SpellCorrectionDatasetCleaner"
     spell_correction_model: SpellCorrectionModelConfig = SpellCorrectionModelConfig()
 
+
 @dataclass
 class CharacterLimiterDatasetCleanerConfig(DatasetCleanerConfig):
     _target_: str = "cybulde.data_processing.dataset_cleaners.CharacterLimiterDatasetCleaner"
     character_limit: int = 300
-    
+
 
 @dataclass
 class DatasetCleanerManagerConfig:
@@ -139,7 +140,7 @@ def setup_config() -> None:
     )
 
     cs.store(
-       group="dataset_cleaner_manager/dataset_cleaner",
+        group="dataset_cleaner_manager/dataset_cleaner",
         name="character_limiter_dataset_cleaner_schema",
         node=CharacterLimiterDatasetCleanerConfig,
     )
@@ -149,6 +150,5 @@ def setup_config() -> None:
         name="spell_correction_dataset_cleaner_schema",
         node=SpellCorrectionDatasetCleanerConfig,
     )
-
 
     cs.store(group="dataset_cleaner_manager", name="dataset_cleaner_manager_schema", node=DatasetCleanerManagerConfig)

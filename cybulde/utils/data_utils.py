@@ -1,6 +1,6 @@
 from pathlib import Path
-from subprocess import CalledProcessError
 from shutil import rmtree
+from subprocess import CalledProcessError
 
 from cybulde.utils.utils import get_logger, run_shell_command
 
@@ -60,12 +60,12 @@ def make_new_data_version(dvc_raw_data_folder: str, dvc_remote_name: str) -> Non
 
 
 def get_cmd_to_get_raw_data(
-        version: str,
-        data_local_save_dir: str,
-        dvc_remote_repo: str,
-        dvc_data_folder: str,
-        github_user_name: str,
-        github_acccess_token: str
+    version: str,
+    data_local_save_dir: str,
+    dvc_remote_repo: str,
+    dvc_data_folder: str,
+    github_user_name: str,
+    github_acccess_token: str,
 ) -> str:
     """Get shell command to download the raw data from dvc store
 
@@ -81,21 +81,22 @@ def get_cmd_to_get_raw_data(
         str: shell command to download the raw data from dvc store
     """
 
-    without_https = dvc_remote_repo.replace("https://","")
+    without_https = dvc_remote_repo.replace("https://", "")
     dvc_remote_repo = f"https://{github_user_name}:{github_acccess_token}@{without_https}"
     command = f"dvc get {dvc_remote_repo} {dvc_data_folder} --rev {version} -o {data_local_save_dir}"
     return command
-    
 
 
 def get_raw_data_with_version(
-        version: str,
-        data_local_save_dir: str,
-        dvc_remote_repo: str,
-        dvc_data_folder: str,
-        github_user_name: str,
-        github_acccess_token: str
+    version: str,
+    data_local_save_dir: str,
+    dvc_remote_repo: str,
+    dvc_data_folder: str,
+    github_user_name: str,
+    github_acccess_token: str,
 ) -> None:
     rmtree(data_local_save_dir, ignore_errors=True)
-    command = get_cmd_to_get_raw_data(version,data_local_save_dir, dvc_remote_repo, dvc_data_folder, github_user_name, github_acccess_token)
+    command = get_cmd_to_get_raw_data(
+        version, data_local_save_dir, dvc_remote_repo, dvc_data_folder, github_user_name, github_acccess_token
+    )
     run_shell_command(command)

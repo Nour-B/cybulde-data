@@ -30,6 +30,12 @@ flake8 = "~=6.0"
 mypy = "~=1.2"
 jupyterlab = "~=4.2"
 types-pyyaml = "~=6.0.12"
+types-cachetools = "~=5.5.0.20240820"
+types-decorator = "~=5.1.8.20240310"
+types-protobuf = "~=5.28.0.20240924" 
+types-pycurl = "~=7.45.3.20240421"
+types-requests = "~=2.32.0.20241016" 
+types-six = "~=1.16.21.20241009"
 
 [build-system]
 requires = ["poetry-core"]

@@ -5,7 +5,6 @@ from pydantic.dataclasses import dataclass
 @dataclass
 class GCPConfig:
     project_id: str = "cybulde-n"
-    
 
 
 def setup_config() -> None:
