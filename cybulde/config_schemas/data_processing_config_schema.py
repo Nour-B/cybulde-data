@@ -27,6 +27,7 @@ class DataProcessingConfig:
     dataset_cleaner_manager: dataset_cleaners_schema.DatasetCleanerManagerConfig = MISSING
 
     dask_cluster: dask_cluster_schema.DaskClusterConfig = MISSING 
+    processed_data_save_dir: str = MISSING
 
 
 def setup_config() -> None:

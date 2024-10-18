@@ -15,3 +15,4 @@ hydra:
     dir: .
 
 version: v3
+processed_data_save_dir: ./dataset/processed
