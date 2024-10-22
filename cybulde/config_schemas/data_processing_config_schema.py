@@ -27,9 +27,16 @@ class DataProcessingConfig:
     dataset_cleaner_manager: dataset_cleaners_schema.DatasetCleanerManagerConfig = MISSING
 
     dask_cluster: dask_cluster_schema.DaskClusterConfig = MISSING 
+
     processed_data_save_dir: str = MISSING
+
+    run_tag: str = "default_run"
+
     docker_image_name: str = MISSING
     docker_image_tag: str = MISSING
+
+    min_nrof_words: int = 2
+   
 
 
 

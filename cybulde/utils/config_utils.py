@@ -1,13 +1,14 @@
 import argparse
-from io import BytesIO, StringIO
+import importlib
 import logging
 import logging.config
-
 import os
 import pickle
-from typing import Any, Optional
 
-from cybulde.utils.io_utils import open_file
+from dataclasses import asdict
+from functools import partial
+from io import BytesIO, StringIO
+from typing import Any, Optional
 
 import hydra
 import yaml
@@ -17,6 +18,7 @@ from hydra.types import TaskFunction
 from omegaconf import DictConfig, OmegaConf
 
 from cybulde.config_schemas import data_processing_config_schema
+from cybulde.utils.io_utils import open_file
 
 
 def get_config(config_path: str, config_name: str) -> TaskFunction:
@@ -98,6 +100,27 @@ def save_config_as_pickle(config: Any, save_path: str) -> None:
     pickle.dump(config, bytes_io)
     with open_file(save_path, "wb") as f:
         f.write(bytes_io.getvalue())
+
+
+def custom_instantiate(config: Any) -> Any:
+    config_as_dict = asdict(config)
+    if "_target_" not in config_as_dict:
+        raise ValueError("Config does not have _target_ key")
+
+    _target_ = config_as_dict["_target_"]
+    _partial_ = config_as_dict.get("_partial_", False)
+
+    config_as_dict.pop("_target_", None)
+    config_as_dict.pop("_partial_", None)
+
+    splitted_target = _target_.split(".")
+    module_name, class_name = ".".join(splitted_target[:-1]), splitted_target[-1]
+
+    module = importlib.import_module(module_name)
+    _class = getattr(module, class_name)
+    if _partial_:
+        return partial(_class, **config_as_dict)
+    return _class(**config_as_dict)
 
 
 

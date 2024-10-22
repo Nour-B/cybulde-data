@@ -1,4 +1,5 @@
 from cybulde.config_schemas.data_processing.dataset_cleaners_schema import DatasetCleanerManagerConfig
+from cybulde.utils.io_utils import write_yaml_file
 from cybulde.utils.utils import get_logger
 from hydra.utils import instantiate
 from omegaconf import OmegaConf
@@ -11,8 +12,8 @@ import os
 from dask.distributed import Client
 
 from cybulde.config_schemas.data_processing_config_schema import DataProcessingConfig
-from cybulde.utils.config_utils import get_config, get_pickle_config
-from cybulde.utils.data_utils import get_raw_data_with_version
+from cybulde.utils.config_utils import custom_instantiate, get_config, get_pickle_config
+from cybulde.utils.data_utils import filter_based_on_minimum_number_of_words, get_raw_data_with_version
 from cybulde.utils.gcp_utils import access_secret_version
 
 def process_raw_data(
@@ -29,22 +30,38 @@ def process_data(config: DataProcessingConfig) -> None:
     logger.info("Processing raw data...")
 
     #print(config)
+  
     #print(OmegaConf.to_yaml(config))
     #return
 
     processed_data_save_dir = config.processed_data_save_dir
 
-    cluster = instantiate(config.dask_cluster)
+    cluster = custom_instantiate(config.dask_cluster)
     client = Client(cluster)
     try:
+        '''
+        github_acces_token = access_secret_version(
+            config.infrastructure.project_id, config.github_access_token_secret_id
+        )
+
+        get_raw_data_with_version(
+            version=config.version,
+            data_local_save_dir=config.data_local_save_dir,
+            dvc_remote_repo=config.dvc_remote_repo,
+            dvc_data_folder=config.dvc_data_folder,
+            github_user_name=config.github_user_name,
+            github_acces_token= github_acces_token
+        )
+        '''
+
+
         dataset_reader_manager = instantiate(config.dataset_reader_manager)
         dataset_cleaner_manager = instantiate(config.dataset_cleaner_manager)
 
         df = dataset_reader_manager.read_data(config.dask_cluster.n_workers)
 
-        print(df.compute().head())
-
-        exit(0)
+        #print(df.compute().head())
+        #exit(0)
 
         #print(60*"#")
         #print(f"{df.npartitions=}")
@@ -66,9 +83,20 @@ def process_data(config: DataProcessingConfig) -> None:
         dev_df = df[df["split"] == "dev"]
         test_df = df[df["split"] == "test"]
 
+        train_df = filter_based_on_minimum_number_of_words(train_df, min_nrof_words=config.min_nrof_words)
+        dev_df = filter_based_on_minimum_number_of_words(dev_df, min_nrof_words=config.min_nrof_words)
+        test_df = filter_based_on_minimum_number_of_words(test_df, min_nrof_words=config.min_nrof_words)
+
         train_df.to_parquet(train_parquet_path)
         dev_df.to_parquet(dev_parquet_path)
         test_df.to_parquet(test_parquet_path)
+        docker_info = {"docker_image": config.docker_image_name, "docker_tag": config.docker_image_tag}
+        docker_info_save_path = os.path.join(processed_data_save_dir, "docker_info.yaml")
+
+        write_yaml_file(docker_info_save_path, docker_info)
+
+        logger.info("Data processing finished!")
+
         
     finally:
         logger.info("Closing dask client and cluster...")

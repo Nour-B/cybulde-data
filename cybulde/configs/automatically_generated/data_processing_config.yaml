@@ -33,7 +33,7 @@ dataset_reader_manager:
       dvc_remote_repo: https://github.com/Nour-B/cybulde-data.git
       github_user_name: Nour-B
       version: v3
-      dev_split_ratio: 0.06
+      dev_split_ratio: 0.03
     twitter:
       _target_: cybulde.data_processing.dataset_readers.TwitterDatasetReader
       dataset_dir: ./data/raw/twitter
@@ -43,9 +43,10 @@ dataset_reader_manager:
       dvc_remote_repo: https://github.com/Nour-B/cybulde-data.git
       github_user_name: Nour-B
       version: v3
-      dev_split_ratio: 0.25
-      test_split_ratio: 0.2
+      dev_split_ratio: 0.125
+      test_split_ratio: 0.1
   repartition: true
+  available_memory: null
 dataset_cleaner_manager:
   _target_: cybulde.data_processing.dataset_cleaners.DatasetCleanerManager
   dataset_cleaners:
@@ -77,8 +78,8 @@ dataset_cleaner_manager:
         count_threshold: 1
 dask_cluster:
   _target_: dask.distributed.LocalCluster
-  n_workers: 12
-  memory_limit: auto
+  n_workers: 4
+  memory_limit: 4 GiB
   processes: true
   threads_per_worker: 1
   scheduler_port: 8786
@@ -92,6 +93,7 @@ dask_cluster:
   protocol: null
   interface: null
   worker_class: null
-processed_data_save_dir: ./dataset/processed
+processed_data_save_dir: gs://cybulde-n/data/processed/rebalanced_splits
+run_tag: rebalanced_splits
 docker_image_name: europe-west4-docker.pkg.dev/cybulde-n/cybulde/cybulde-data-processing
-docker_image_tag: 0CC0AA93-71A9-41A2-B16F-A25EDF4E8A42
+docker_image_tag: 2A0DAA19-D89D-47D8-A0B4-B8DF9BC71837

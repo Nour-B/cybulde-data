@@ -6,6 +6,8 @@ services:
     image: cybulde-data-processing
     platform: linux/amd64
     container_name: cybulde-data-processing-container
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=./creds/cybulde-n-38a68ba55de1.json
     build:
       context: .
       dockerfile: ./docker/Dockerfile
@@ -16,8 +18,6 @@ services:
       - ./:/app/
       - ~/.config/gcloud/:/home/${USER_NAME:-nour}/.config/gcloud
       - ~/.ssh:/home/${USER_NAME:-nour}/.ssh
-    environment:
-      - HYDRA_FULL_ERROR=1
     ports:
       - 8888:8888
     ipc: host
