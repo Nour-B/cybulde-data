@@ -15,7 +15,7 @@ class DataProcessingConfig:
     dvc_raw_data_folder: str = "data/raw"
 
     version: str = MISSING
-    data_local_save_dir: str = "./dataset/raw"
+    data_local_save_dir: str = "./data/raw"
     dvc_remote_repo: str = "https://github.com/Nour-B/cybulde-data.git"
     dvc_data_folder: str = "data/raw"
     github_user_name: str = "Nour-B"
@@ -28,6 +28,9 @@ class DataProcessingConfig:
 
     dask_cluster: dask_cluster_schema.DaskClusterConfig = MISSING 
     processed_data_save_dir: str = MISSING
+    docker_image_name: str = MISSING
+    docker_image_tag: str = MISSING
+
 
 
 def setup_config() -> None:

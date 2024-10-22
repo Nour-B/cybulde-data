@@ -3,6 +3,7 @@ from io import BytesIO, StringIO
 import logging
 import logging.config
 
+import os
 import pickle
 from typing import Any, Optional
 
@@ -31,6 +32,25 @@ def get_config(config_path: str, config_name: str) -> TaskFunction:
         return decorated_main
 
     return main_decorator
+
+def get_pickle_config(config_path: str, config_name: str) -> TaskFunction:
+    setup_config()
+    setup_logger()
+
+    def main_decorator(task_function: TaskFunction) -> Any:
+        def decorated_main() -> Any:
+            config = load_pickle_config(config_path, config_name)
+            return task_function(config)
+
+        return decorated_main
+
+    return main_decorator
+
+
+def load_pickle_config(config_path: str, config_name: str) -> Any:
+    with open_file(os.path.join(config_path, f"{config_name}.pickle"), "rb") as f:
+        config = pickle.load(f)
+    return config
 
 
 def setup_config() -> None:

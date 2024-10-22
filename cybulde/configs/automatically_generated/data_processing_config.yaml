@@ -2,7 +2,7 @@ dvc_remote_name: gcs-storage
 dvc_remote_url: gs://cybulde-n/data/raw
 dvc_raw_data_folder: data/raw
 version: v3
-data_local_save_dir: ./dataset/raw
+data_local_save_dir: ./data/raw
 dvc_remote_repo: https://github.com/Nour-B/cybulde-data.git
 dvc_data_folder: data/raw
 github_user_name: Nour-B
@@ -16,18 +16,33 @@ dataset_reader_manager:
   dataset_readers:
     ghc:
       _target_: cybulde.data_processing.dataset_readers.GHCDatasetReader
-      dataset_dir: ./dataset/raw/ghc
+      dataset_dir: ./data/raw/ghc
       dataset_name: ghc
+      gcp_project_id: cybulde-n
+      gcp_github_access_token_secret_id: cybulde-data-github-access-token
+      dvc_remote_repo: https://github.com/Nour-B/cybulde-data.git
+      github_user_name: Nour-B
+      version: v3
       dev_split_ratio: 0.3
     jtc:
       _target_: cybulde.data_processing.dataset_readers.JigsawToxicCommentsDatasetReader
-      dataset_dir: ./dataset/raw/jigsaw-toxic-comments
+      dataset_dir: ./data/raw/jigsaw-toxic-comments
       dataset_name: jtc
+      gcp_project_id: cybulde-n
+      gcp_github_access_token_secret_id: cybulde-data-github-access-token
+      dvc_remote_repo: https://github.com/Nour-B/cybulde-data.git
+      github_user_name: Nour-B
+      version: v3
       dev_split_ratio: 0.06
     twitter:
       _target_: cybulde.data_processing.dataset_readers.TwitterDatasetReader
-      dataset_dir: ./dataset/raw/twitter
+      dataset_dir: ./data/raw/twitter
       dataset_name: twitter
+      gcp_project_id: cybulde-n
+      gcp_github_access_token_secret_id: cybulde-data-github-access-token
+      dvc_remote_repo: https://github.com/Nour-B/cybulde-data.git
+      github_user_name: Nour-B
+      version: v3
       dev_split_ratio: 0.25
       test_split_ratio: 0.2
   repartition: true
@@ -62,7 +77,7 @@ dataset_cleaner_manager:
         count_threshold: 1
 dask_cluster:
   _target_: dask.distributed.LocalCluster
-  n_workers: 4
+  n_workers: 12
   memory_limit: auto
   processes: true
   threads_per_worker: 1
@@ -78,3 +93,5 @@ dask_cluster:
   interface: null
   worker_class: null
 processed_data_save_dir: ./dataset/processed
+docker_image_name: europe-west4-docker.pkg.dev/cybulde-n/cybulde/cybulde-data-processing
+docker_image_tag: 0CC0AA93-71A9-41A2-B16F-A25EDF4E8A42
