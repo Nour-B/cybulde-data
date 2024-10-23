@@ -1,0 +1,6 @@
+infrastructure:
+  project_id: cybulde-n
+  zone: europe-west4-b
+  network: default
+docker_image_name: europe-west4-docker.pkg.dev/cybulde-n/cybulde/cybulde-data-processing
+docker_image_tag: 6BCB0932-8859-4918-BA8F-9D8827CCFA1C
