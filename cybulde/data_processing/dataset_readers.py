@@ -3,12 +3,12 @@ import os
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from cybulde.utils.data_utils import get_repo_address_with_access_token, repartition_dataframe
 import dask.dataframe as dd
-from dvc.api import get_url
 
 from dask_ml.model_selection import train_test_split
+from dvc.api import get_url
 
+from cybulde.utils.data_utils import get_repo_address_with_access_token, repartition_dataframe
 from cybulde.utils.utils import get_logger
 
 
@@ -77,10 +77,10 @@ class DatasetReader(ABC):
             first_dfs.append(sub_first_df)
             second_dfs.append(sub_second_df)
 
-        first_df = dd.concat(first_dfs) 
-        second_df = dd.concat(second_dfs) 
+        first_df = dd.concat(first_dfs)
+        second_df = dd.concat(second_dfs)
         return first_df, second_df
-    
+
     def get_remote_data_url(self, dataset_path: str) -> str:
         dataset_url: str = get_url(path=dataset_path, repo=self.dvc_remote_repo, rev=self.version)
         return dataset_url
@@ -169,7 +169,7 @@ class JigsawToxicCommentsDatasetReader(DatasetReader):
         train_csv_url = self.get_remote_data_url(train_csv_path)
         train_df = dd.read_csv(train_csv_url)
         train_df = self.get_text_and_label_columns(train_df)
-        train_df = dd.concat([train_df, to_train_df])  # type: ignore
+        train_df = dd.concat([train_df, to_train_df]) 
 
         train_df, dev_df = self.split_dataset(train_df, self.dev_split_ratio, stratify_column="label")
 
@@ -232,7 +232,7 @@ class DatasetReaderManager:
 
     def read_data(self, nrof_workers: int) -> dd.core.DataFrame:
         dfs = [dataset_reader.read_data() for dataset_reader in self.dataset_readers.values()]
-        df: dd.core.DataFrame = dd.concat(dfs)  # type: ignore
+        df: dd.core.DataFrame = dd.concat(dfs)
         if self.repartition:
             df = repartition_dataframe(df, nrof_workers=nrof_workers, available_memory=self.available_memory)
 

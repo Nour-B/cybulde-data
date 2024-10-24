@@ -1,4 +1,5 @@
 from typing import Optional
+
 from hydra.core.config_store import ConfigStore
 from omegaconf import MISSING, SI
 from pydantic.dataclasses import dataclass
@@ -14,7 +15,6 @@ class DatasetReaderConfig:
     dvc_remote_repo: str = SI("${dvc_remote_repo}")
     github_user_name: str = SI("${github_user_name}")
     version: str = SI("${version}")
-
 
 
 @dataclass

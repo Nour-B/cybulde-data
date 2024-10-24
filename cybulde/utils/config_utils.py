@@ -35,6 +35,7 @@ def get_config(config_path: str, config_name: str) -> TaskFunction:
 
     return main_decorator
 
+
 def get_pickle_config(config_path: str, config_name: str) -> TaskFunction:
     setup_config()
     setup_logger()
@@ -122,6 +123,3 @@ def custom_instantiate(config: Any) -> Any:
     if _partial_:
         return partial(_class, **config_as_dict)
     return _class(**config_as_dict)
-
-
-

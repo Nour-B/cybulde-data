@@ -1,9 +1,8 @@
-from cybulde.config_schemas.dask_cluster import dask_cluster_schema
 from hydra.core.config_store import ConfigStore
 from omegaconf import MISSING
 from pydantic.dataclasses import dataclass
-from utils.gcp_utils import access_secret_version
 
+from cybulde.config_schemas.dask_cluster import dask_cluster_schema
 from cybulde.config_schemas.data_processing import dataset_cleaners_schema, dataset_readers_schema
 from cybulde.config_schemas.infrastructure import gcp_schema
 
@@ -26,7 +25,7 @@ class DataProcessingConfig:
     dataset_reader_manager: dataset_readers_schema.DatasetReaderManagerConfig = MISSING
     dataset_cleaner_manager: dataset_cleaners_schema.DatasetCleanerManagerConfig = MISSING
 
-    dask_cluster: dask_cluster_schema.DaskClusterConfig = MISSING 
+    dask_cluster: dask_cluster_schema.DaskClusterConfig = MISSING
 
     processed_data_save_dir: str = MISSING
 
@@ -36,8 +35,6 @@ class DataProcessingConfig:
     docker_image_tag: str = MISSING
 
     min_nrof_words: int = 2
-   
-
 
 
 def setup_config() -> None:

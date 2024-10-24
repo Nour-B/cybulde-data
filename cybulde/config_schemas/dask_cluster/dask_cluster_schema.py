@@ -1,5 +1,5 @@
-from typing import Any, Optional
 from dataclasses import field
+from typing import Any, Optional
 
 from hydra.core.config_store import ConfigStore
 from omegaconf import MISSING, SI
@@ -35,6 +35,7 @@ class LocalDaskClusterConfig(DaskClusterConfig):
     interface: Optional[str] = None
     worker_class: Optional[WorkerClassConfig] = None
 
+
 @dataclass
 class GCPDaskClusterConfig(DaskClusterConfig):
     _target_: str = "dask_cloudprovider.gcp.GCPCluster"
@@ -68,9 +69,7 @@ class GCPDaskClusterConfig(DaskClusterConfig):
     instance_labels: Optional[dict[str, str]] = None
 
 
-
 def setup_config() -> None:
     cs = ConfigStore.instance()
     cs.store(name="local_dask_cluster_schema", node=LocalDaskClusterConfig, group="dask_cluster")
     cs.store(name="gcp_dask_cluster_schema", node=GCPDaskClusterConfig, group="dask_cluster")
-    

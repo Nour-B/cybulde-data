@@ -7,7 +7,7 @@ import symspellpy
 
 from symspellpy import SymSpell
 
-#logging.basicConfig(level = logging.INFO)
+# logging.basicConfig(level = logging.INFO)
 
 
 def get_logger(name: str) -> logging.Logger:

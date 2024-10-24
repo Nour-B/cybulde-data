@@ -2,11 +2,12 @@ from pathlib import Path
 from shutil import rmtree
 from subprocess import CalledProcessError
 from typing import Optional
-from cybulde.utils.gcp_utils import access_secret_version
-import dask.dataframe as dd
-import psutil
-import pandas as pd
 
+import dask.dataframe as dd
+import pandas as pd
+import psutil
+
+from cybulde.utils.gcp_utils import access_secret_version
 from cybulde.utils.utils import get_logger, run_shell_command
 
 DATA_UTILS_LOGGER = get_logger(Path(__file__).name)
@@ -142,8 +143,6 @@ def get_nrof_partitions(
     return nrof_partitions
 
 
-
-
 def repartition_dataframe(
     df: dd.core.DataFrame,
     nrof_workers: int,
@@ -169,4 +168,3 @@ def get_repo_address_with_access_token(
 
 def filter_based_on_minimum_number_of_words(df: pd.DataFrame, min_nrof_words: int) -> pd.DataFrame:
     return df[df["cleaned_text"].str.split().apply(len) >= min_nrof_words]
-
