@@ -20,6 +20,8 @@ services:
       - ~/.ssh:/home/${USER_NAME:-nour}/.ssh
     ports:
       - 8888:8888
+      - 8000:8000
+
     ipc: host
     init: true
     
